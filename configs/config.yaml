@@ -1,0 +1,202 @@
+# CASS System Configuration
+
+# Dataset Management
+datasets:
+  # Available datasets for each detection type
+  fall_detection:
+    - name: "UR-Fall"
+      path: "datasets/fall_detection/ur_fall"
+      format: "video"
+      enabled: true
+    - name: "UP-Fall"
+      path: "datasets/fall_detection/up_fall"
+      format: "video"
+      enabled: true
+    - name: "Le2i"
+      path: "datasets/fall_detection/le2i"
+      format: "video"
+      enabled: false
+    - name: "Custom Campus"
+      path: "datasets/fall_detection/custom"
+      format: "coco"
+      enabled: false
+  
+  crowd_detection:
+    - name: "ShanghaiTech A"
+      path: "datasets/crowd/shanghaitech_a"
+      format: "images"
+      enabled: true
+    - name: "ShanghaiTech B"
+      path: "datasets/crowd/shanghaitech_b"
+      format: "images"
+      enabled: true
+    - name: "UCF_CC_50"
+      path: "datasets/crowd/ucf_cc_50"
+      format: "images"
+      enabled: false
+  
+  face_detection:
+    - name: "WIDER FACE"
+      path: "datasets/face/wider_face"
+      format: "coco"
+      enabled: true
+    - name: "VGGFace2"
+      path: "datasets/face/vggface2"
+      format: "custom"
+      enabled: false
+  
+  emotion_detection:
+    - name: "FER2013"
+      path: "datasets/emotion/fer2013"
+      format: "images"
+      enabled: true
+    - name: "AffectNet"
+      path: "datasets/emotion/affectnet"
+      format: "images"
+      enabled: false
+  
+  object_detection:
+    - name: "COCO"
+      path: "datasets/object/coco"
+      format: "coco"
+      enabled: true
+    - name: "OpenImages"
+      path: "datasets/object/openimages"
+      format: "custom"
+      enabled: false
+
+# Model Configuration
+models:
+  yolo:
+    version: "yolov8"  # Using YOLOv8 as closest available to YOLOv12
+    weights: "models/weights/yolov8n.pt"
+    device: "cuda"  # cuda, cpu, or mps
+    conf_threshold: 0.25
+    iou_threshold: 0.45
+    
+  fall_detection:
+    pose_model: "mediapipe"  # mediapipe or openpose
+    temporal_model: "lstm"
+    weights: "models/weights/fall_lstm.pt"
+    confidence_threshold: 0.7
+    
+  face_recognition:
+    detector: "wider_face"
+    embedder: "facenet"
+    weights: "models/weights/facenet.pt"
+    recognition_threshold: 0.6
+    
+  emotion_detection:
+    model: "fer2013_cnn"
+    weights: "models/weights/emotion_cnn.pt"
+    confidence_threshold: 0.5
+    
+  crowd_detection:
+    method: "yolo_counting"  # yolo_counting or csrnet
+    density_threshold: 50
+
+# VLM/LLM Configuration
+vlm_llm:
+  enabled: true
+  
+  # Local LLM Configuration
+  llm:
+    model_type: "llama"  # llama, mistral, gpt4all
+    model_path: "models/llm/llama-2-7b-chat.gguf"
+    device: "cuda"
+    max_tokens: 512
+    temperature: 0.7
+    
+  # Local VLM Configuration  
+  vlm:
+    model_type: "llava"  # llava, blip, git
+    model_path: "models/vlm/llava-v1.5-7b"
+    device: "cuda"
+    max_tokens: 256
+    
+  # Analysis settings
+  analyze_incidents: true
+  generate_reports: true
+  answer_queries: true
+
+# Training Configuration
+training:
+  batch_size: 16
+  epochs: 100
+  learning_rate: 0.001
+  device: "cuda"
+  save_interval: 10
+  validation_split: 0.2
+  augmentation:
+    enabled: true
+    brightness: 0.2
+    contrast: 0.2
+    flip: true
+    rotation: 10
+
+# Testing Configuration
+testing:
+  enabled: true
+  test_split: 0.1
+  metrics:
+    - "precision"
+    - "recall"
+    - "f1"
+    - "mAP"
+  benchmark_models:
+    - "yolov8n"
+    - "yolov8s"
+    - "yolov8m"
+  generate_reports: true
+  comparative_analysis: true
+
+# Inference Configuration
+inference:
+  input_source: "rtsp"  # rtsp, file, webcam
+  frame_skip: 2  # Process every Nth frame
+  buffer_size: 600  # Circular buffer size (frames)
+  pre_event_seconds: 10
+  post_event_seconds: 20
+  
+# Storage Configuration
+storage:
+  type: "local"  # local or s3
+  clips_path: "storage/clips"
+  snapshots_path: "storage/snapshots"
+  retention_days: 30
+  
+# Notification Configuration
+notifications:
+  enabled: true
+  channels:
+    - "console"
+    - "file"
+    # - "email"
+    # - "sms"
+    # - "webhook"
+  severity_levels:
+    critical: ["fall_detected", "restricted_area_breach"]
+    high: ["crowd_overflow", "unethical_activity"]
+    medium: ["mobile_phone_detected"]
+    low: ["normal_activity"]
+
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  enable_websocket: true
+  cors_origins:
+    - "*"
+  
+# Security Configuration
+security:
+  face_blur_default: true
+  opt_in_recognition: true
+  audit_logging: true
+  encryption_at_rest: false
+  
+# System Configuration
+system:
+  log_level: "INFO"
+  max_workers: 4
+  enable_monitoring: true
