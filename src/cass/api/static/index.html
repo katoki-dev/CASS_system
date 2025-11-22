@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CASS - Campus AI Safety & Surveillance System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: opacity 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-online {
+            background: #10b981;
+        }
+        
+        .status-offline {
+            background: #ef4444;
+        }
+        
+        .upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .upload-area:hover {
+            background: #f8f9fa;
+        }
+        
+        .upload-area input[type="file"] {
+            display: none;
+        }
+        
+        #results {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .alert-critical {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+        }
+        
+        .alert-high {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            color: #92400e;
+        }
+        
+        .alert-medium {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            color: #1e40af;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-list li:before {
+            content: "✓ ";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛡️ CASS</h1>
+            <p class="subtitle">Campus AI Safety & Surveillance System</p>
+        </header>
+        
+        <div class="grid">
+            <div class="card">
+                <h2>🎯 Detection Capabilities</h2>
+                <ul class="feature-list">
+                    <li>Fall Detection with Pose Estimation</li>
+                    <li>Crowd Detection & Counting</li>
+                    <li>Face Detection & Recognition</li>
+                    <li>Emotion Detection</li>
+                    <li>Mobile Phone Detection</li>
+                    <li>Restricted Area Monitoring</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h2>🤖 AI Features</h2>
+                <ul class="feature-list">
+                    <li>Local VLM for Visual Analysis</li>
+                    <li>Local LLM for Incident Analysis</li>
+                    <li>Automated Report Generation</li>
+                    <li>Real-time Incident Assessment</li>
+                    <li>Context-aware Alerts</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h2>📊 Dataset Management</h2>
+                <p>Support for multiple dataset formats:</p>
+                <ul class="feature-list">
+                    <li>COCO Format</li>
+                    <li>YOLO Format</li>
+                    <li>Video Datasets</li>
+                    <li>Image Collections</li>
+                    <li>Add Custom Datasets</li>
+                </ul>
+                <a href="/api/datasets" class="btn">View Datasets</a>
+            </div>
+            
+            <div class="card">
+                <h2>🔧 Training & Testing</h2>
+                <p>Comprehensive model training and evaluation:</p>
+                <ul class="feature-list">
+                    <li>YOLOv8 Training Pipeline</li>
+                    <li>Model Benchmarking</li>
+                    <li>Performance Metrics</li>
+                    <li>Comparative Analysis</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>📸 Test Detection</h2>
+            <p>Upload an image to test the detection system:</p>
+            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                <input type="file" id="fileInput" accept="image/*" onchange="uploadImage()">
+                <p>Click to upload an image</p>
+                <p style="font-size: 0.9em; color: #999;">Supported formats: JPG, PNG</p>
+            </div>
+            
+            <div id="results">
+                <h3>Detection Results</h3>
+                <div id="resultsContent"></div>
+            </div>
+        </div>
+        
+        <div class="grid">
+            <div class="card">
+                <h2>📚 API Documentation</h2>
+                <p>Access the interactive API documentation:</p>
+                <a href="/docs" class="btn">OpenAPI Docs</a>
+            </div>
+            
+            <div class="card">
+                <h2>⚙️ System Status</h2>
+                <p id="systemStatus">
+                    <span class="status-indicator status-online"></span>
+                    System Online
+                </p>
+                <button class="btn" onclick="checkStatus()">Check Status</button>
+            </div>
+            
+            <div class="card">
+                <h2>📖 Documentation</h2>
+                <p>Learn more about CASS:</p>
+                <a href="https://github.com/katoki-dev/CASS_system" class="btn" target="_blank">GitHub Repository</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        async function checkStatus() {
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                
+                const statusEl = document.getElementById('systemStatus');
+                if (data.status === 'healthy') {
+                    statusEl.innerHTML = '<span class="status-indicator status-online"></span>System Online';
+                } else {
+                    statusEl.innerHTML = '<span class="status-indicator status-offline"></span>System Offline';
+                }
+            } catch (error) {
+                console.error('Status check failed:', error);
+                const statusEl = document.getElementById('systemStatus');
+                statusEl.innerHTML = '<span class="status-indicator status-offline"></span>Connection Error';
+            }
+        }
+        
+        async function uploadImage() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) return;
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            try {
+                const response = await fetch('/api/detect/image', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                displayResults(data);
+            } catch (error) {
+                console.error('Upload failed:', error);
+                alert('Failed to process image. Please try again.');
+            }
+        }
+        
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            const contentDiv = document.getElementById('resultsContent');
+            
+            resultsDiv.style.display = 'block';
+            
+            if (!data.success) {
+                contentDiv.innerHTML = '<p>Error: ' + (data.detail || 'Unknown error') + '</p>';
+                return;
+            }
+            
+            const results = data.results;
+            let html = '';
+            
+            // Display alerts
+            if (results.alerts && results.alerts.length > 0) {
+                html += '<h4>Alerts Detected:</h4>';
+                results.alerts.forEach(alert => {
+                    const alertClass = 'alert-' + alert.severity;
+                    html += `<div class="alert ${alertClass}">
+                        <strong>${alert.type}</strong><br>
+                        Severity: ${alert.severity}<br>
+                        Count: ${alert.count || 1}
+                    </div>`;
+                });
+            } else {
+                html += '<p>No alerts detected.</p>';
+            }
+            
+            // Display detections summary
+            if (results.detections) {
+                html += '<h4>Detections Summary:</h4><ul>';
+                
+                for (const [key, value] of Object.entries(results.detections)) {
+                    if (Array.isArray(value)) {
+                        html += `<li>${key}: ${value.length} detected</li>`;
+                    } else if (typeof value === 'object') {
+                        html += `<li>${key}: ${JSON.stringify(value)}</li>`;
+                    }
+                }
+                
+                html += '</ul>';
+            }
+            
+            contentDiv.innerHTML = html;
+        }
+        
+        // Check status on load
+        checkStatus();
+    </script>
+</body>
+</html>
